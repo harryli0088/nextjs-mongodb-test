@@ -1,8 +1,14 @@
 import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
+import Link from 'next/link'
 import { InferGetServerSidePropsType } from 'next'
+import { getSession, signOut, useSession } from 'next-auth/react'
 
 export async function getServerSideProps(context:any) {
+  // Check if the user is authenticated from the server
+  const session = await getSession(context)
+  console.log({ session })
+
   try {
     await clientPromise
     // `await clientPromise` will use the default database passed in the MONGODB_URI
@@ -28,6 +34,34 @@ export async function getServerSideProps(context:any) {
 export default function Home({
   isConnected,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data: session, status } = useSession()
+
+  console.log("session",session, status)
+
+  if (status === 'loading') {
+    return <>Loading...</>
+  }
+
+  if (status === 'authenticated') {
+    return (
+      <>
+        Signed in as {session.user?.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
+    )
+  }
+
+  if (status === 'unauthenticated') {
+    return (
+      <>
+        Not signed in <br />
+        <Link href='/api/auth/signin'>
+          Login
+        </Link>
+      </>
+    )
+  }
+
   return (
     <div className="container">
       <Head>
@@ -249,3 +283,4 @@ export default function Home({
     </div>
   )
 }
+
