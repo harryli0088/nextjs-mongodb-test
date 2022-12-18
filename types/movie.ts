@@ -1,0 +1,51 @@
+type MovieType = {
+  "_id": string,
+  "fullplot": string,
+  "imdb":{
+    "rating": number,
+    "votes": number,
+    "id": number,
+  },
+  "year": number,
+  "plot": string,
+  "genres": string[],
+  "rated": string,
+  "metacritic": number,
+  "title": string,
+  "lastupdated": string,
+  "languages": string[],
+  "writers": string[],
+  "type": string,
+  "tomatoes":{
+    "viewer":{
+      "rating": number,
+      "numReviews": number,
+      "meter": number,
+    },
+    "dvd": string,
+    "critic":{
+      "rating": number,
+      "numReviews": number,
+      "meter": number,
+    },
+    "lastUpdated": string,
+    "consensus": string,
+    "rotten": number,
+    "production": string,
+    "fresh": number,
+  },
+  "poster": string,
+  "num_mflix_comments":2,
+  "released": string,
+  "awards":{
+    "wins": number,
+    "nominations": number,
+    "text": string,
+  },
+  "countries": string[],
+  "cast": string[],
+  "directors": string[],
+  "runtime": number,
+}
+
+export default MovieType
