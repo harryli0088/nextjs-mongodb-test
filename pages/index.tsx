@@ -34,7 +34,7 @@ export async function getServerSideProps(context:any) {
 export default function Home({
   isConnected,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession() 
 
   console.log("session",session, status)
 
