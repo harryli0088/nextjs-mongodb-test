@@ -23,7 +23,6 @@ export default NextAuth({
       from: process.env.EMAIL_FROM
     }),
   ],
-  secret: process.env.SECRET,
   session: {
     strategy: 'jwt',
     maxAge: THIRTY_DAYS,
