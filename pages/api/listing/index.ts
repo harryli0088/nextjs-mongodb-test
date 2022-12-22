@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { unstable_getServerSession } from "next-auth"
 import clientPromise from "../../../lib/mongodb";
-import { Listing } from "../../../types/listing";
+import { Listing, ListingInterface } from "../../../types/listing";
 import { ResponseFuncs } from "../../../utils/types"
 import { authOptions } from "../auth/[...nextauth]"
 
@@ -28,7 +28,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.json(listings)
       },
       POST: async (req: NextApiRequest, res: NextApiResponse) => {
-        res.json(200)
+        //@ts-ignore
+        const email = (session?.user?.email) as string
+        if (email) {
+          const client = await clientPromise;
+          const db = client.db("test");
+          const { description, price, title } = req.body;
+  
+          const newListing = { //TODO how to Typescript-ify this?
+            buyerId: null,
+            description, 
+            price,
+            sellerId: email,
+            status: "available",
+            title,
+          }
+  
+          const result = await db.collection("listings").insertOne(newListing);
+  
+          res.status(200).json({_id: result.insertedId.toString()});
+        }
+        else {
+          res.json(401) //unauthorized
+        }
       },
     }
   

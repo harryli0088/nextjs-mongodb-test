@@ -12,7 +12,6 @@ export type ListingStatusType = "available"
 export interface ListingInterface extends WithId<Document> {
   buyerId?: null | string
   description: string
-  id: ObjectId
   price: number
   sellerId?: string
   status: ListingStatusType

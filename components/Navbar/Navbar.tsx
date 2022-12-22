@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 
+import styles from "./Navbar.module.scss"
+
 
 export default function Navbar() {
   const { data: session, status } = useSession() 
@@ -31,7 +33,7 @@ export default function Navbar() {
   })()
 
   return (
-    <nav>
+    <nav id={styles.navbar}>
       {content}
     </nav>
   )
