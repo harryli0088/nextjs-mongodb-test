@@ -27,6 +27,11 @@ export async function getServerSideProps(context:any) {
   }
 }
 
+// TODO scenarios
+// seller waiting to ship / buyer waiting for seller to ship
+// package in transit
+// buyer receives package / seller waiting for buyer to confirm receipt
+
 export default function ListingPage({
   listing,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -39,7 +44,31 @@ export default function ListingPage({
 
     const content = (() => {
       if(isSeller) {
+        //TODO can't edit if no longer available
         return <ListingForm listing={listing}/>
+      }
+
+      const buy = async () => {
+        try {
+          const response = await fetch("/api/listing/buy", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify({_id:listing._id}) // body data type must match "Content-Type" header
+          })
+          
+          const body = await response.json()
+          location.reload()
+        }
+        catch (error) {
+          console.error(error)
+        }
       }
 
       return (
@@ -51,7 +80,7 @@ export default function ListingPage({
           <p style={{marginBottom:5}}>Price</p>
           <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
 
-          <Button>{isBuyer ? "isBuyer TODO" : "Buy TODO"}</Button>
+          {isBuyer ? <Button>TODO</Button> : <Button onClick={() => buy()}>Buy</Button>}
         </>
       )
     })()

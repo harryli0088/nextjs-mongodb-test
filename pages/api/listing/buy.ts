@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { Session, unstable_getServerSession } from "next-auth"
 import getDb from "../../../lib/getDb";
 import getEmailFromSession from "../../../lib/getEmailFromSession";
+import { ListingStatusType } from "../../../types/listing";
 import ResponseFuncs from "../../../types/responseFuncs";
 import { authOptions } from "../auth/[...nextauth]"
 
@@ -16,69 +17,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Potential Responses
     const handleCase: ResponseFuncs = {
-      // GET: async (req: NextApiRequest, res: NextApiResponse) => {
-      //   const client = await clientPromise;
-      //   const db = client.db("test");
-  
-      //   const listings = (await (await db.collection("listings").find<Listing>({}).toArray()).map((listing) => {
-      //     delete listing.buyerId
-      //     delete listing.sellerId
-      //     return listing
-      //   })) as Listing[];
-  
-      //   res.json(listings)
-      // },
       POST: async (req: NextApiRequest, res: NextApiResponse) => {
         const email = getEmailFromSession(session)
         if (email) {
-          const { description, price, title } = req.body;
+          const { _id } = req.body;
 
           //TODO input validation
-  
-          const newListing = { //TODO how to Typescript-ify this?
-            buyerId: null,
-            description, 
-            price,
-            sellerId: email,
-            status: "available",
-            title,
-          }
-  
-          const db = await getDb()
-          const result = await db.collection("listings").insertOne(newListing);
-  
-          res.status(200).json({_id: result.insertedId.toString()});
-        }
-        else {
-          res.json(401) //unauthorized
-        }
-      },
-      PUT: async (req: NextApiRequest, res: NextApiResponse) => {
-        const email = getEmailFromSession(session)
-        if (email) {
-          const { _id, description, price, title } = req.body;
 
-          //TODO input validation, ex _id is required
-  
-          const $set:{[key:string]: any} = {
-            description, 
-            price,
-            title,
+          const $set:{buyerId:string, status: ListingStatusType} = {
+            buyerId: email,
+            status: "reserved", //TODO use variable field
           }
-          Object.keys($set).forEach(key => { //remove any empty keys
-            if($set[key] === undefined || $set[key] === null) {
-              delete $set[key]
-            }
-          })
   
           const db = await getDb()
           const result = await db.collection("listings").updateOne(
-            { _id: new ObjectId(_id), status: "available", sellerId: email }, //TODO make "available" a config variable or something
+            {
+              _id: new ObjectId(_id),
+              buyerId: null,
+              sellerId: {$ne : email}, //the buyer cannot also be the seller
+              status: "available", //TODO make "available" a config variable or something
+            },
             {$set},
             {upsert: false} //don't create a new listing if it doesn't exist
           )
-          
+  
           if(result.modifiedCount === 1) { //if a document was updated
+            //TODO email notifications
             res.status(200).json({})
           }
           else {
