@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { Session, unstable_getServerSession } from "next-auth"
 import getDb from "../../../lib/getDb";
 import getEmailFromSession from "../../../lib/getEmailFromSession";
+import { ListingHistoryType, ListingInterface } from "../../../types/listing";
 import ResponseFuncs from "../../../types/responseFuncs";
 import { authOptions } from "../auth/[...nextauth]"
 
@@ -35,9 +36,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           //TODO input validation
   
-          const newListing = { //TODO how to Typescript-ify this?
+          //@ts-ignore
+          const newListing:ListingInterface = { //TODO how to Typescript-ify this?
             buyerId: null,
-            description, 
+            description,
+            history: [{
+              date: new Date().getTime(),
+              description: "created",
+            }],
             price,
             sellerId: email,
             status: "available",
@@ -59,6 +65,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const { _id, description, price, title } = req.body;
 
           //TODO input validation, ex _id is required
+
+          const $push:{history: ListingHistoryType} = {
+            history: {
+              date: new Date().getTime(),
+              description: "seller edit"
+            }
+          }
   
           const $set:{[key:string]: any} = {
             description, 
@@ -74,7 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const db = await getDb()
           const result = await db.collection("listings").updateOne(
             { _id: new ObjectId(_id), status: "available", sellerId: email }, //TODO make "available" a config variable or something
-            {$set},
+            {$push, $set},
             {upsert: false} //don't create a new listing if it doesn't exist
           )
           

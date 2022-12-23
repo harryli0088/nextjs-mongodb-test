@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { Session, unstable_getServerSession } from "next-auth"
 import getDb from "../../../lib/getDb";
 import getEmailFromSession from "../../../lib/getEmailFromSession";
-import { ListingStatusType } from "../../../types/listing";
+import { ListingHistoryType, ListingStatusType } from "../../../types/listing";
 import ResponseFuncs from "../../../types/responseFuncs";
 import { authOptions } from "../auth/[...nextauth]"
 
@@ -24,6 +24,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           //TODO input validation
 
+          const $push:{history: ListingHistoryType} = {
+            history: {
+              date: new Date().getTime(),
+              description: "bought"
+            }
+          }
+
           const $set:{buyerId:string, status: ListingStatusType} = {
             buyerId: email,
             status: "reserved", //TODO use variable field
@@ -37,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               sellerId: {$ne : email}, //the buyer cannot also be the seller
               status: "available", //TODO make "available" a config variable or something
             },
-            {$set},
+            {$push, $set},
             {upsert: false} //don't create a new listing if it doesn't exist
           )
   
