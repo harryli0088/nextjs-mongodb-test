@@ -2,6 +2,7 @@ import { SessionProvider } from 'next-auth/react'
 
 import Navbar from "../components/Navbar/Navbar.tsx"
 
+import 'bootstrap/dist/css/bootstrap.min.css'
 import "../lib/styles.css"
 
 export default function App ({

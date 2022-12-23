@@ -1,13 +1,17 @@
 import { InferGetServerSidePropsType } from 'next'
-import { useRouter } from 'next/router';
 import getListing from '../../lib/listing/getListing';
+import Button from 'react-bootstrap/Button';
+
+import styles from "./listing.module.scss"
+import { getSession } from 'next-auth/react';
 
 export async function getServerSideProps(context:any) {
   try {
-    const id = context.query.slug?.[0]
-    if (id) {
+    const session = await getSession(context)
+    const _id = context.query.slug?.[0]
+    if (_id) {
       return {
-        props: { listing: await getListing(id) },
+        props: { listing: await getListing(_id, session?.user?.email || null) },
       }
     }
     return {
@@ -26,11 +30,28 @@ export default function ListingPage({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   if(listing) {
     return (
-      <div>{listing.title}</div>
+      <section>
+        <div id={styles.listing}>
+          <div id={styles.images}>
+            <img src="/imgs/blue_box.svg" alt="thumbnail for listing"/>
+          </div>
+
+          <div id={styles.content}>
+            <h2>{listing.title}</h2>
+
+            <p>{listing.description}</p>
+
+            <p style={{marginBottom:5}}>Price</p>
+            <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
+
+            <Button>Buy</Button>
+          </div>
+        </div>
+      </section>
     )
   }
 
   return (
-    <div>This listing does not exist :{"("}</div>
+    <section>This listing does not exist :{"("}</section>
   )
 }

@@ -15,18 +15,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Potential Responses
     const handleCase: ResponseFuncs = {
-      GET: async (req: NextApiRequest, res: NextApiResponse) => {
-        const client = await clientPromise;
-        const db = client.db("test");
+      // GET: async (req: NextApiRequest, res: NextApiResponse) => {
+      //   const client = await clientPromise;
+      //   const db = client.db("test");
   
-        const listings = (await (await db.collection("listings").find<Listing>({}).toArray()).map((listing) => {
-          delete listing.buyerId
-          delete listing.sellerId
-          return listing
-        })) as Listing[];
+      //   const listings = (await (await db.collection("listings").find<Listing>({}).toArray()).map((listing) => {
+      //     delete listing.buyerId
+      //     delete listing.sellerId
+      //     return listing
+      //   })) as Listing[];
   
-        res.json(listings)
-      },
+      //   res.json(listings)
+      // },
       POST: async (req: NextApiRequest, res: NextApiResponse) => {
         //@ts-ignore
         const email = (session?.user?.email) as string
@@ -34,6 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           const client = await clientPromise;
           const db = client.db("test");
           const { description, price, title } = req.body;
+
+          //TODO input validation
   
           const newListing = { //TODO how to Typescript-ify this?
             buyerId: null,

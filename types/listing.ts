@@ -10,10 +10,10 @@ export type ListingStatusType = "available"
 
 
 export interface ListingInterface extends WithId<Document> {
-  buyerId?: null | string
+  buyerId: string | null //this should be populated only if the user is the buyer
   description: string
   price: number
-  sellerId?: string
+  sellerId: string | null //this should be populated only if the user is the seller
   status: ListingStatusType
   title: string
 }

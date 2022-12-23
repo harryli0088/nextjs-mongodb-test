@@ -1,0 +1,17 @@
+#header {
+  background-color: var(--fourth-color);
+  height: 400px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+  input {
+    width: 100%;
+  }
+}
+
+#listings {
+  display: flex;
+}

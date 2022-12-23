@@ -34,6 +34,7 @@ export default function Navbar() {
 
   return (
     <nav id={styles.navbar}>
+      <Link href="/"><p id={styles.logo}>Logo</p></Link>
       {content}
     </nav>
   )

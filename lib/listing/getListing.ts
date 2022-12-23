@@ -3,13 +3,13 @@ import { ListingInterface } from '../../types/listing'
 import { ObjectId } from 'mongodb';
 import publicizeListing from './publicizeListing';
 
-export default async function getListing(id:string) {
+export default async function getListing(_id:string, userId:string|null) {
   const client = await clientPromise;
   const db = client.db("test");
 
-  const listing = await db.collection("listings").findOne<ListingInterface>({_id: new ObjectId(String(id))})
+  const listing = await db.collection("listings").findOne<ListingInterface>({_id: new ObjectId(String(_id))})
   if(listing) {
-    publicizeListing(listing)
+    publicizeListing(listing,userId)
   }
 
   return JSON.parse(JSON.stringify(listing)) as typeof listing

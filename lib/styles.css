@@ -1,3 +1,41 @@
+:root {
+  --first-color: #00204a;
+  --second-color: #005792;
+  --third-color: #00bbf0;
+  --fourth-color: #fdb44b;
+
+  --tablet-padding:calc(50vw - 300px + 1em);
+  --desktop-padding:calc(50vw - 400px);
+}
+
 body {
-  margin: 0;
+	color: #333;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+header, section, footer, nav {
+  padding: 1em;
+}
+@media only screen and (min-width: 600px) {
+  header, section, footer, nav {
+    padding-left: var(--tablet-padding);
+    padding-right: var(--tablet-padding);
+  }
+}
+@media only screen and (min-width: 1000px) {
+  header, section, footer, nav {
+    padding-left: var(--desktop-padding);
+    padding-right: var(--desktop-padding);
+  }
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+label {
+  font-weight: bold;
 }
