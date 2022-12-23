@@ -16,4 +16,4 @@ https://itnext.io/next-js-passwordless-email-authentication-with-nextauth-mongod
 
 `react-fontawesome`: https://fontawesome.com/
 
-`react-hook-form`: https://www.npmjs.com/package/react-hook-form
+`react-hook-form`: https://www.npmjs.com/package/react-hook-form 
