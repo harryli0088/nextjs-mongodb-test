@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 
 import styles from "./Navbar.module.scss"
+import Button from 'react-bootstrap/Button'
 
 
 export default function Navbar() {
@@ -16,7 +17,7 @@ export default function Navbar() {
       return (
         <div>
           Signed in as {session.user?.email} &nbsp;
-          <button onClick={() => signOut()}>Sign out</button>
+          <Button onClick={() => signOut()}>Sign out</Button>
         </div>
       )
     }

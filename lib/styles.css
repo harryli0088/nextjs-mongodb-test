@@ -31,11 +31,6 @@ header, section, footer, nav {
   }
 }
 
-hr {
-  border: none;
-  border-top: 1px solid #ccc;
-}
-
 label {
   font-weight: bold;
 }

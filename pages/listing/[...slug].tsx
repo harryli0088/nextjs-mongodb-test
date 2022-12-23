@@ -3,7 +3,7 @@ import getListing from '../../lib/listing/getListing';
 import Button from 'react-bootstrap/Button';
 
 import styles from "./listing.module.scss"
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context:any) {
   try {
@@ -11,7 +11,7 @@ export async function getServerSideProps(context:any) {
     const _id = context.query.slug?.[0]
     if (_id) {
       return {
-        props: { listing: await getListing(_id, session?.user?.email || null) },
+        props: { listing: await getListing(_id, session?.user?.email || null) }, //TODO only return available listings
       }
     }
     return {
@@ -28,7 +28,23 @@ export async function getServerSideProps(context:any) {
 export default function ListingPage({
   listing,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { data: session, status } = useSession() 
+
   if(listing) {
+    const buttonText = (() => {
+      if(session?.user?.email) {
+        if(listing.sellerId === session.user.email) { //if this listing belongs to the seller
+          return "Edit TODO"
+        }
+        else if(listing.buyerId === session.user.email) {
+          return "TODO"
+        }
+        else {
+          return "Buy TODO"
+        }
+      }
+    })()
+
     return (
       <section>
         <div id={styles.listing}>
@@ -44,7 +60,7 @@ export default function ListingPage({
             <p style={{marginBottom:5}}>Price</p>
             <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
 
-            <Button>Buy</Button>
+            <Button>{buttonText}</Button>
           </div>
         </div>
       </section>

@@ -54,6 +54,9 @@ export default function Home({
           <CreateListingForm/>
         </div>
 
+        <hr/>
+
+        <h3>Available Listings</h3>
         <div id={styles.listings}>
           {listings.map((l,i) => <Listing key={i} listing={l}/>)}
         </div>
@@ -105,7 +108,7 @@ function CreateListingForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h3>Create a New Listing</h3>
-
+      
       <Form.Group>
         <Form.Label>Title</Form.Label>
         <Form.Control {...register('title', { required: true, minLength: 1, maxLength:50 })} />
@@ -116,7 +119,7 @@ function CreateListingForm() {
       
       <Form.Group>
         <Form.Label>Description</Form.Label>
-        <Form.Control {...register('description', { required: true, minLength: 1, maxLength:200 })} />
+        <Form.Control as="textarea" {...register('description', { required: true, minLength: 1, maxLength:200 })} />
       </Form.Group>
       {errors.description && <p>Description is required.</p>}
 
