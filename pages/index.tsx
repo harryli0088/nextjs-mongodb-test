@@ -57,7 +57,7 @@ export default function Home({
         <div id={styles.listings}>
           {listings.map((l,i) => <Listing key={i} listing={l}/>)}
 
-          {listings.length===0 && <p>There are currently no avaialble listings.</p>}
+          {listings.length===0 && <p>There are currently no available listings.</p>}
         </div>
       </section>
     </>
