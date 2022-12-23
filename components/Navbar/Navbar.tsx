@@ -26,7 +26,7 @@ export default function Navbar() {
         <div>
           Not signed in &nbsp;
           <Link href='/api/auth/signin'>
-            Login
+            <Button>Login</Button>
           </Link>
         </div>
       )

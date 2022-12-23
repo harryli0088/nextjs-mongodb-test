@@ -12,7 +12,7 @@ import ListingForm from '../components/ListingForm/ListingForm'
 export async function getServerSideProps(context:any) {
   try {
     const session = await getSession(context)
-    const listings = await getListings(session?.user?.email || null);
+    const listings = await getListings(session?.user?.email || null, "available");
 
     return {
       props: { listings },
@@ -56,6 +56,8 @@ export default function Home({
         <h3>Available Listings</h3>
         <div id={styles.listings}>
           {listings.map((l,i) => <Listing key={i} listing={l}/>)}
+
+          {listings.length===0 && <p>There are currently no avaialble listings.</p>}
         </div>
       </section>
     </>

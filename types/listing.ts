@@ -6,8 +6,8 @@ export type ListingStatusType = "available"
 | "received"
 | "completed"
 
-export type ListingHistoryDescriptionType = "created"
-| "seller edit" | "bought" | "shipped" | "received"
+export type ListingHistoryDescriptionType = ListingStatusType
+| "created" | "seller edit"
 
 export type ListingHistoryType = {
   date: number,
