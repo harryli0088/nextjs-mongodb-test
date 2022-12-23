@@ -7,7 +7,7 @@ export default async function getListing(_id:string, userId:string|null) {
   const client = await clientPromise;
   const db = client.db("test");
 
-  const listing = await db.collection("listings").findOne<ListingInterface>({_id: new ObjectId(String(_id))})
+  const listing = await db.collection("listings").findOne<ListingInterface>({_id: new ObjectId(_id)})
   if(listing) {
     publicizeListing(listing,userId)
   }

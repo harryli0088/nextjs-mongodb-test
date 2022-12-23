@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 
 import styles from "./listing.module.scss"
 import { getSession, useSession } from 'next-auth/react';
+import getEmailFromSession from '../../lib/getEmailFromSession';
+import ListingForm from '../../components/ListingForm/ListingForm';
 
 export async function getServerSideProps(context:any) {
   try {
@@ -11,7 +13,7 @@ export async function getServerSideProps(context:any) {
     const _id = context.query.slug?.[0]
     if (_id) {
       return {
-        props: { listing: await getListing(_id, session?.user?.email || null) }, //TODO only return available listings
+        props: { listing: await getListing(_id, getEmailFromSession(session) || null) }, //TODO only return available listings
       }
     }
     return {
@@ -28,21 +30,30 @@ export async function getServerSideProps(context:any) {
 export default function ListingPage({
   listing,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session, status } = useSession() 
+  const { data: session, status } = useSession()
+  const email = getEmailFromSession(session)
 
   if(listing) {
-    const buttonText = (() => {
-      if(session?.user?.email) {
-        if(listing.sellerId === session.user.email) { //if this listing belongs to the seller
-          return "Edit TODO"
-        }
-        else if(listing.buyerId === session.user.email) {
-          return "TODO"
-        }
-        else {
-          return "Buy TODO"
-        }
+    const isSeller = listing.sellerId === email
+    const isBuyer = listing.buyerId === email
+
+    const content = (() => {
+      if(isSeller) {
+        return <ListingForm listing={listing}/>
       }
+
+      return (
+        <>
+          <h2>{listing.title}</h2>
+
+          <p>{listing.description}</p>
+
+          <p style={{marginBottom:5}}>Price</p>
+          <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
+
+          <Button>{isBuyer ? "isBuyer TODO" : "Buy TODO"}</Button>
+        </>
+      )
     })()
 
     return (
@@ -53,14 +64,7 @@ export default function ListingPage({
           </div>
 
           <div id={styles.content}>
-            <h2>{listing.title}</h2>
-
-            <p>{listing.description}</p>
-
-            <p style={{marginBottom:5}}>Price</p>
-            <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
-
-            <Button>{buttonText}</Button>
+            {content}
           </div>
         </div>
       </section>
