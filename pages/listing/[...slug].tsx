@@ -1,3 +1,4 @@
+import React, { useMemo, useState } from 'react';
 import { InferGetServerSidePropsType } from 'next'
 import getListing from '../../lib/listing/getListing';
 import Button from 'react-bootstrap/Button';
@@ -6,6 +7,8 @@ import styles from "./listing.module.scss"
 import { getSession, useSession } from 'next-auth/react';
 import getEmailFromSession from '../../lib/getEmailFromSession';
 import ListingForm from '../../components/ListingForm/ListingForm';
+import { ListingStatusType } from '../../types/listing';
+import Link from 'next/link';
 
 export async function getServerSideProps(context:any) {
   try {
@@ -27,10 +30,6 @@ export async function getServerSideProps(context:any) {
   }
 }
 
-// TODO scenarios
-// seller waiting to ship / buyer waiting for seller to ship
-// package in transit
-// buyer receives package / seller waiting for buyer to confirm receipt
 
 export default function ListingPage({
   listing,
@@ -38,38 +37,97 @@ export default function ListingPage({
   const { data: session, status } = useSession()
   const email = getEmailFromSession(session)
 
+  const [editing,setEditing] = useState<boolean>(false)
+
+  const BUYER_BEHAVIOR:{[key in ListingStatusType]:React.FC<any>} = {
+    "available": () => <div><p>test</p></div>,
+    "bought": () => {
+      return <p>Received payment. Waiting for seller to ship.</p>
+    },
+    "shipped": () => {
+      return (
+        <div>
+          <p>Package is en route. Track package: <Link href=".">fake tracking url</Link></p>
+          <Button>I have received the package</Button>
+        </div>
+      )
+    },
+    "received": () => {
+      return (
+        <Button>Complete the transaction</Button>
+      )
+    },
+    "completed": () => {
+      return (
+        <p>This listing transaction has been completed!</p>
+      )
+    },
+  }
+
+  const SELLER_BEHAVIOR:{[key in ListingStatusType]:React.FC<any>} = useMemo(() => ({
+    "available": () => <Button onClick={() => setEditing(true)}>Edit this listing</Button>,
+    "bought": () => {
+      return (
+        <div>
+          <p>Received payment. Waiting you to ship the package.</p>
+          <Button>Confirmed Package has been Shipped</Button>
+        </div>
+      )
+    },
+    "shipped": () => {
+      return (
+        <div>
+          <p>Package is en route. Track package: <Link href=".">fake tracking url</Link>. Waiting for buyer to receive package.</p>
+        </div>
+      )
+    },
+    "received": () => {
+      return (
+        <p>Buyer has received package. Waiting for transation completion</p>
+      )
+    },
+    "completed": () => {
+      return (
+        <p>This listing transaction has been completed!</p>
+      )
+    },
+  }), [])
+
   if(listing) {
     const isSeller = listing.sellerId === email
     const isBuyer = listing.buyerId === email
 
+    const buy = async () => {
+      try {
+        const response = await fetch("/api/listing/buy", {
+          method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          mode: 'cors', // no-cors, *cors, same-origin
+          cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+          credentials: 'same-origin', // include, *same-origin, omit
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow', // manual, *follow, error
+          referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+          body: JSON.stringify({_id:listing._id}) // body data type must match "Content-Type" header
+        })
+        
+        const body = await response.json()
+        location.reload()
+      }
+      catch (error) {
+        console.error(error)
+      }
+    }
+
     const content = (() => {
-      if(isSeller) {
-        //TODO can't edit if no longer available
-        return <ListingForm listing={listing}/>
+      if(editing) {
+        return <ListingForm listing={listing} onSuccess={() => location.reload()}/>
       }
 
-      const buy = async () => {
-        try {
-          const response = await fetch("/api/listing/buy", {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify({_id:listing._id}) // body data type must match "Content-Type" header
-          })
-          
-          const body = await response.json()
-          location.reload()
-        }
-        catch (error) {
-          console.error(error)
-        }
-      }
+      const BuyerContent = BUYER_BEHAVIOR[listing.status]
+      console.log("<BuyerContent/>",<BuyerContent/>)
+      const SellerContent = SELLER_BEHAVIOR[listing.status]
 
       return (
         <>
@@ -80,7 +138,12 @@ export default function ListingPage({
           <p style={{marginBottom:5}}>Price</p>
           <p style={{fontSize:"1.2em",marginTop:0,fontWeight:"bold"}}>${listing.price}</p>
 
-          {isBuyer ? <Button>TODO</Button> : <Button onClick={() => buy()}>Buy</Button>}
+          {isBuyer && <BuyerContent/>}
+
+          {isSeller && <SellerContent/>}
+
+
+          {!isSeller && !isBuyer && <Button onClick={() => buy()}>Buy</Button>}
         </>
       )
     })()

@@ -5,10 +5,11 @@ import { getListingRoute } from "../../lib/routes"
 import { ListingInterface } from '../../types/listing'
 
 type Props = {
-  listing?: ListingInterface
+  listing?: ListingInterface,
+  onSuccess?: () => void,
 }
 
-export default function ListingForm({listing}:Props) {
+export default function ListingForm({listing,onSuccess}:Props) {
   const {
     register,
     handleSubmit,
@@ -32,7 +33,7 @@ export default function ListingForm({listing}:Props) {
         })
         
         const body = await response.json()
-        //TODO
+        onSuccess?.()
       }
       catch (error) {
         console.error(error)
@@ -55,6 +56,7 @@ export default function ListingForm({listing}:Props) {
         
         const body = await response.json()
         Router.push(getListingRoute(body._id.toString()))
+        // onSuccess?.()
       }
       catch (error) {
         console.error(error)

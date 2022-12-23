@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
           const $set:{buyerId:string, status: ListingStatusType} = {
             buyerId: email,
-            status: "reserved", //TODO use variable field
+            status: "bought", //TODO use variable field
           }
   
           const db = await getDb()

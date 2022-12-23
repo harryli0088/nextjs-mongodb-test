@@ -1,14 +1,13 @@
 import type { WithId, Document } from 'mongodb'
 
 export type ListingStatusType = "available"
-| "reserved"
-| "deposited"
+| "bought"
 | "shipped"
 | "received"
 | "completed"
 
 export type ListingHistoryDescriptionType = "created"
-| "seller edit" | "bought" | "shipped" | "arrived" | "received"
+| "seller edit" | "bought" | "shipped" | "received"
 
 export type ListingHistoryType = {
   date: number,
