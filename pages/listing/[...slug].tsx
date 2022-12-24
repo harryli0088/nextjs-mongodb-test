@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { InferGetServerSidePropsType } from 'next'
-import Link from 'next/link';
 import { getSession, useSession } from 'next-auth/react';
+
+import Head from 'next/head';
+import Link from 'next/link';
 
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
@@ -14,8 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faFlagCheckered, faTruck } from '@fortawesome/free-solid-svg-icons';
 
 import FETCH_OPTIONS from '../../lib/fetchOptions';
-import getListing from '../../lib/listing/getListing';
 import getEmailFromSession from '../../lib/getEmailFromSession';
+import getListing from '../../lib/listing/getListing';
+import getTitle from '../../lib/getTitle';
 import ListingForm from '../../components/ListingForm/ListingForm';
 import { ListingStatusType } from '../../types/listing';
 
@@ -198,43 +201,56 @@ export default function ListingPage({
           {isSeller && <SellerContent/>}
 
 
-          {!isSeller && !isBuyer && <Button onClick={() => buy()}>Buy</Button>}
+          {status!=="loading" && !isSeller && !isBuyer && <Button onClick={() => buy()}>Buy</Button>}
         </>
       )
     })()
 
     return (
-      <Container>
-        <br/>
-        <Row id={styles.listing}>
-          <Col id={styles.images} md={6} sm={12}>
-            <Carousel className={styles.carousel}>
-              <Carousel.Item>
-                <img src="/imgs/orange_box.svg" alt="thumbnail for listing"/>
-                <Carousel.Caption>
-                </Carousel.Caption>
-              </Carousel.Item>
+      <>
+        <Head>
+          <title>{getTitle(`Buy | ${listing.title}`)}</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-              <Carousel.Item>
-                <img src="/imgs/blue_box.svg" alt="thumbnail for listing"/>
+        <Container>
+          <br/>
+          <Row id={styles.listing}>
+            <Col id={styles.images} md={6} sm={12}>
+              <Carousel className={styles.carousel}>
+                <Carousel.Item>
+                  <img src="/imgs/orange_box.svg" alt="thumbnail for listing"/>
+                  <Carousel.Caption>
+                  </Carousel.Caption>
+                </Carousel.Item>
 
-                <Carousel.Caption>
-                </Carousel.Caption>
-              </Carousel.Item>
-            </Carousel>
-          </Col>
+                <Carousel.Item>
+                  <img src="/imgs/blue_box.svg" alt="thumbnail for listing"/>
 
-          <Col id={styles.content} md={6} sm={12}>
-            {content}
-          </Col>
-        </Row>
-        <br/>
-        <br/>
-      </Container>
+                  <Carousel.Caption>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              </Carousel>
+            </Col>
+
+            <Col id={styles.content} md={6} sm={12}>
+              {content}
+            </Col>
+          </Row>
+          <br/>
+          <br/>
+        </Container>
+      </>
     )
   }
 
   return (
-    <Container>This listing does not exist :{"("}</Container>
+    <>
+      <Head>
+        <title>{getTitle(`Buy | Listing Not Found`)}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Container>This listing does not exist or is unavailable :{"("}</Container>
+    </>
   )
 }

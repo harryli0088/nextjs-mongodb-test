@@ -5,6 +5,7 @@ import { getSession, useSession } from 'next-auth/react'
 import Container from 'react-bootstrap/Container'
 
 import getListings from '../lib/listings/getListings'
+import getTitle from '../lib/getTitle'
 import Listing from "../components/Listing/Listing"
 import Search from '../components/Search/Search';
 
@@ -36,14 +37,14 @@ export default function Home({
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>{getTitle("Home")}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <header id={styles.header}>
         <Container>
           <div id={styles["header-content"]}>
-            <div style={{maxWidth:500}}>
+            <div style={{height: 200,maxWidth:500}}>
               <h1>A Catchy Heading</h1>
               
               <Search/>

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 
 import ListingForm from '../components/ListingForm/ListingForm'
+import getTitle from '../lib/getTitle'
 
 export default function Sell() {
   const { data: session, status } = useSession() 
@@ -13,7 +14,7 @@ export default function Sell() {
   return (
     <>
       <Head>
-        <title>Create Next App | Sell</title>
+        <title>{getTitle("Sell")}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
