@@ -8,7 +8,7 @@ export default async function getListing(_id:string, userId:string|null, status?
 
   const query = {
     _id: new ObjectId(_id),
-    $or: [ { buyerId: userId }, { sellerId: userId } ], //user can only view this listing if they are the buyer or seller, or the listing is available, ie buyerId is null
+    $or: [ { buyerId: null }, { buyerId: userId }, { sellerId: userId } ], //user can only view this listing if they are the buyer or seller, or the listing is available, ie buyerId is null
     status,
   }
   if (!status) {

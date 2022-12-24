@@ -6,7 +6,7 @@ export default async function getListings(userId:string|null, status?:ListingSta
   const db = await getDb()
 
   const query = {
-    $or: [ { buyerId: userId }, { sellerId: userId } ], //user can only view this listing if they are the buyer or seller, or the listing is available, ie buyerId is null
+    $or: [ { buyerId: null }, { buyerId: userId }, { sellerId: userId } ], //user can only view this listing if they are the buyer or seller, or the listing is available, ie buyerId is null
     status,
   }
   if (!status) {
