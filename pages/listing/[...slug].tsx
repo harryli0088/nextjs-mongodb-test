@@ -130,7 +130,7 @@ export default function ListingPage({
       "bought": () => {
         return (
           <div>
-            <p>Received payment. Waiting you to ship the package.</p>
+            <p>Received payment. Waiting for you to ship the package.</p>
             <Button onClick={() => ship()}><FontAwesomeIcon icon={faTruck}/> Confirmed Package has been Shipped</Button>
           </div>
         )

@@ -3,6 +3,7 @@
   --second-color: #005792;
   --third-color: #00bbf0;
   --fourth-color: #fdb44b;
+  --dark-color: #212F3D;
 
   --tablet-padding:calc(50vw - 300px + 1em);
   --desktop-padding:calc(50vw - 400px);

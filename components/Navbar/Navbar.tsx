@@ -35,8 +35,20 @@ export default function Navbar() {
 
   return (
     <nav id={styles.navbar}>
-      <Link href="/"><p id={styles.logo}>Logo</p></Link>
-      {content}
+      <div id={styles["first-row"]}>
+        <Link href="/"><p id={styles.logo}>Logo</p></Link>
+        {content}
+      </div>
+
+      <br/>
+      
+      <div id={styles["second-row"]}>
+        <Link href="/">Buy</Link>
+        <Link href="/sell">Sell</Link>
+        <Link href="/">Option</Link>
+        <Link href="/">Option</Link>
+        <Link href="/">Option</Link>
+      </div>
     </nav>
   )
 }

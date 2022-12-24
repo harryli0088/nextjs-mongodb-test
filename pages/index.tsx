@@ -7,7 +7,6 @@ import Listing from "../components/Listing/Listing"
 import Form from 'react-bootstrap/Form';
 
 import styles from "./index.module.scss"
-import ListingForm from '../components/ListingForm/ListingForm'
 
 export async function getServerSideProps(context:any) {
   try {
@@ -47,12 +46,6 @@ export default function Home({
       </header>
 
       <section>
-        <div>
-          <ListingForm/>
-        </div>
-
-        <hr/>
-
         <h3>Available Listings</h3>
         <div id={styles.listings}>
           {listings.map((l,i) => <Listing key={i} listing={l}/>)}
