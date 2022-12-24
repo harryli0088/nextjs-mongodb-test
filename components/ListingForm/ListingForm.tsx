@@ -78,7 +78,7 @@ export default function ListingForm({listing,onSuccess}:Props) {
       
       <Form.Group>
         <Form.Label>Description</Form.Label>
-        <Form.Control as="textarea" {...register('description', { required: true, minLength: 1, maxLength:200, value: listing?.description || "" })} />
+        <Form.Control as="textarea" {...register('description', { required: true, minLength: 1, maxLength:10000, value: listing?.description || "" })} />
       </Form.Group>
       {errors.description && <p>Description is required.</p>}
 
