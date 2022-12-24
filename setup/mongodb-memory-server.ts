@@ -18,4 +18,4 @@ export async function teardown() {
     //@ts-ignore
     await global.__MONGO_DB__.stop();
   }
-}d
+}
