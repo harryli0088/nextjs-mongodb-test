@@ -13,7 +13,7 @@ export default async function getListings(userId:string|null, status?:ListingSta
     delete query.status
   }
 
-  const listings = ((await db.collection("listings").find<ListingInterface>(query).toArray()).map((l) => publicizeListing(l,userId))) as ListingInterface[]
+  const listings = (await db.collection("listings").find<ListingInterface>(query).toArray()).map((l) => publicizeListing(l,userId)) as ListingInterface[]
 
   return JSON.parse(JSON.stringify(listings))
 }

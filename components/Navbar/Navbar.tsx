@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 
-import styles from "./Navbar.module.scss"
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
 
+import styles from "./Navbar.module.scss"
 
 export default function Navbar() {
   const { data: session, status } = useSession() 
@@ -35,20 +36,22 @@ export default function Navbar() {
 
   return (
     <nav id={styles.navbar}>
-      <div id={styles["first-row"]}>
-        <Link href="/"><p id={styles.logo}>Logo</p></Link>
-        {content}
-      </div>
+      <Container>
+        <div id={styles["first-row"]}>
+          <Link href="/"><p id={styles.logo}>Logo</p></Link>
+          {content}
+        </div>
 
-      <br/>
-      
-      <div id={styles["second-row"]}>
-        <Link href="/">Buy</Link>
-        <Link href="/sell">Sell</Link>
-        <Link href="/">Option</Link>
-        <Link href="/">Option</Link>
-        <Link href="/">Option</Link>
-      </div>
+        <br/>
+        
+        <div id={styles["second-row"]}>
+          <Link href="/">Buy</Link>
+          <Link href="/sell">Sell</Link>
+          <Link href="/">Option</Link>
+          <Link href="/">Option</Link>
+          <Link href="/">Option</Link>
+        </div>
+      </Container>
     </nav>
   )
 }

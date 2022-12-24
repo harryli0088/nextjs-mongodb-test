@@ -4,9 +4,6 @@
   --third-color: #00bbf0;
   --fourth-color: #fdb44b;
   --dark-color: #212F3D;
-
-  --tablet-padding:calc(50vw - 300px + 1em);
-  --desktop-padding:calc(50vw - 400px);
 }
 
 body {
@@ -18,18 +15,6 @@ body {
 
 header, section, footer, nav {
   padding: 1em;
-}
-@media only screen and (min-width: 600px) {
-  header, section, footer, nav {
-    padding-left: var(--tablet-padding);
-    padding-right: var(--tablet-padding);
-  }
-}
-@media only screen and (min-width: 1000px) {
-  header, section, footer, nav {
-    padding-left: var(--desktop-padding);
-    padding-right: var(--desktop-padding);
-  }
 }
 
 label {

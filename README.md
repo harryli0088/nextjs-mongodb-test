@@ -8,6 +8,14 @@ https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/
 
 https://itnext.io/next-js-passwordless-email-authentication-with-nextauth-mongodb-397e558bdcf0
 
+## Create a Search Index in MongoDB
+
+https://www.mongodb.com/docs/atlas/atlas-search/tutorial/create-index/
+
+### Autocomplete search index
+
+https://www.mongodb.com/docs/atlas/atlas-search/tutorial/autocomplete-tutorial/
+
 ## Libraries
 
 `next-auth`: https://next-auth.js.org/

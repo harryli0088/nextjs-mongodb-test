@@ -1,8 +1,11 @@
 #listing {
-  display: flex;
+  padding-top: 1em;
 
   #images {
-
+    .carousel {
+      text-align: center;
+      background-color: #ccc;
+    }
   }
 
   #content {

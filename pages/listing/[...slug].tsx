@@ -6,6 +6,9 @@ import { getSession, useSession } from 'next-auth/react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBox, faFlagCheckered, faTruck } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +20,6 @@ import ListingForm from '../../components/ListingForm/ListingForm';
 import { ListingStatusType } from '../../types/listing';
 
 import styles from "./listing.module.scss"
-
 
 export async function getServerSideProps(context:any) {
   try {
@@ -202,34 +204,34 @@ export default function ListingPage({
     })()
 
     return (
-      <section>
-        <div id={styles.listing}>
-          <div id={styles.images}>
-          <Carousel>
-            <Carousel.Item>
-              <img src="/imgs/orange_box.svg" alt="thumbnail for listing"/>
-              <Carousel.Caption>
-              </Carousel.Caption>
-            </Carousel.Item>
+      <Container>
+        <Row id={styles.listing}>
+          <Col id={styles.images} md={6} sm={12}>
+            <Carousel className={styles.carousel}>
+              <Carousel.Item>
+                <img src="/imgs/orange_box.svg" alt="thumbnail for listing"/>
+                <Carousel.Caption>
+                </Carousel.Caption>
+              </Carousel.Item>
 
-            <Carousel.Item>
-              <img src="/imgs/blue_box.svg" alt="thumbnail for listing"/>
+              <Carousel.Item>
+                <img src="/imgs/blue_box.svg" alt="thumbnail for listing"/>
 
-              <Carousel.Caption>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-          </div>
+                <Carousel.Caption>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
+          </Col>
 
-          <div id={styles.content}>
+          <Col id={styles.content} md={6} sm={12}>
             {content}
-          </div>
-        </div>
-      </section>
+          </Col>
+        </Row>
+      </Container>
     )
   }
 
   return (
-    <section>This listing does not exist :{"("}</section>
+    <Container>This listing does not exist :{"("}</Container>
   )
 }

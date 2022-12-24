@@ -1,6 +1,11 @@
 #navbar {
   background-color: var(--first-color);
   color: white;
+  a { color: inherit; }
+  a:link { text-decoration: none; }
+  a:visited { text-decoration: none; }
+  a:hover { text-decoration: none; }
+  a:active { text-decoration: none; }
 
   #first-row {
     padding-top: 1em;
@@ -31,11 +36,4 @@
       color: var(--fourth-color);
     }
   }
-  
-
-  a { color: inherit; }
-  a:link { text-decoration: none; }
-  a:visited { text-decoration: none; }
-  a:hover { text-decoration: none; }
-  a:active { text-decoration: none; }
 }

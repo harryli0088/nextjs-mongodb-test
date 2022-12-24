@@ -17,18 +17,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Potential Responses
     const handleCase: ResponseFuncs = {
-      // GET: async (req: NextApiRequest, res: NextApiResponse) => {
-      //   const client = await clientPromise;
-      //   const db = client.db("test");
-  
-      //   const listings = (await (await db.collection("listings").find<Listing>({}).toArray()).map((listing) => {
-      //     delete listing.buyerId
-      //     delete listing.sellerId
-      //     return listing
-      //   })) as Listing[];
-  
-      //   res.json(listings)
-      // },
       POST: async (req: NextApiRequest, res: NextApiResponse) => {
         const email = getEmailFromSession(session)
         if (email) {
