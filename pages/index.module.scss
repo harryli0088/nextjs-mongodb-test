@@ -1,14 +1,16 @@
 #header {
   background-color: var(--fourth-color);
-  height: 400px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: white;
 
-  input {
-    width: 100%;
+  #header-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+
+    input {
+      width: 100%;
+    }
   }
 }
 

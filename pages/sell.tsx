@@ -18,6 +18,7 @@ export default function Sell() {
       </Head>
 
       <Container>
+        <br/>
         {session?.user?.email ? <ListingForm/> : (
           <>
             <p>Log in or create a new account to make a new listing</p>
@@ -26,6 +27,7 @@ export default function Sell() {
             </Link>
           </>
         )}
+        <br/>
       </Container>
     </>
   )

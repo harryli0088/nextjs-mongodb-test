@@ -205,6 +205,7 @@ export default function ListingPage({
 
     return (
       <Container>
+        <br/>
         <Row id={styles.listing}>
           <Col id={styles.images} md={6} sm={12}>
             <Carousel className={styles.carousel}>
@@ -227,6 +228,8 @@ export default function ListingPage({
             {content}
           </Col>
         </Row>
+        <br/>
+        <br/>
       </Container>
     )
   }

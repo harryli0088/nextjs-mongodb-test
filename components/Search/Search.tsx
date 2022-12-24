@@ -37,7 +37,7 @@ export default function Search() {
         placeholder="Search for a listing..."
         //@ts-ignore
         renderMenuItemChildren={(option: ListingInterface) => (
-          <Link href={`/listing/${option._id}`}>{option.title}</Link>
+          <Link href={`/listing/${option._id}`}><div>{option.title}</div></Link>
         )}
       />
     </div>

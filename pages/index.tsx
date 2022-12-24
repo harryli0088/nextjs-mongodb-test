@@ -42,9 +42,13 @@ export default function Home({
 
       <header id={styles.header}>
         <Container>
-          <h1>A Catchy Heading</h1>
-          
-          <Search/>
+          <div id={styles["header-content"]}>
+            <div style={{maxWidth:500}}>
+              <h1>A Catchy Heading</h1>
+              
+              <Search/>
+            </div>
+          </div>
         </Container>
       </header>
       
