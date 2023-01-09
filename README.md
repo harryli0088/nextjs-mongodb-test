@@ -4,7 +4,11 @@
 
 https://www.mongodb.com/developer/languages/javascript/nextjs-with-mongodb/
 
-## Next.JS Email Auth Tutorial
+## Auth0 Next.js Tutorial
+
+https://auth0.com/docs/quickstart/webapp/nextjs
+
+## Next.JS Email Auth Tutorial (no longer used, check the git commit history 7b12d08eb3c61b7f57ba86854e373d9ccd03b7b0)
 
 https://itnext.io/next-js-passwordless-email-authentication-with-nextauth-mongodb-397e558bdcf0
 
@@ -17,6 +21,8 @@ https://www.mongodb.com/docs/atlas/atlas-search/tutorial/create-index/
 https://www.mongodb.com/docs/atlas/atlas-search/tutorial/autocomplete-tutorial/
 
 ## Libraries
+`@auth0/nextjs-auth0`: https://github.com/auth0/nextjs-auth0
+
 `mongodb-memory-server`: https://github.com/nodkz/mongodb-memory-server
 
 `next-auth`: https://next-auth.js.org/

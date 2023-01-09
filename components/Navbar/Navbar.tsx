@@ -1,24 +1,24 @@
 import Link from 'next/link'
-import { signOut, useSession } from 'next-auth/react'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 
 import styles from "./Navbar.module.scss"
+import { ROUTES } from '../../lib/routes'
 
 export default function Navbar() {
-  const { data: session, status } = useSession() 
+  const { user, error, isLoading } = useUser()
 
   const content = (() => {
-    if (status === 'loading') {
+    if (isLoading) {
       return <>Loading...</>
     }
-  
-    if (status === 'authenticated') {
+    else if (user) {
       return (
         <div>
-          Signed in as {session.user?.email} &nbsp;
-          <Button onClick={() => signOut()}>Sign out</Button>
+          Signed in as {user.email} &nbsp;
+          <a href={ROUTES.LOGOUT}><Button>Sign out</Button></a>
         </div>
       )
     }
@@ -26,7 +26,7 @@ export default function Navbar() {
       return (
         <div>
           Not signed in &nbsp;
-          <Link href='/api/auth/signin'>
+          <Link href={ROUTES.LOGIN}>
             <Button>Login</Button>
           </Link>
         </div>

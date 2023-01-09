@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { InferGetServerSidePropsType } from 'next'
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import Head from 'next/head';
 import Link from 'next/link';
@@ -26,11 +27,16 @@ import styles from "./listing.module.scss"
 
 export async function getServerSideProps(context:any) {
   try {
-    const session = await getSession(context)
+    const session = await getSession(context.req, context.res)
     const _id = context.query.slug?.[0]
     if (_id) {
       return {
-        props: { listing: await getListing(_id, getEmailFromSession(session) || null) }, //TODO only return available listings
+        props: {
+          listing: await getListing(
+            _id, 
+            getEmailFromSession(session),
+          )
+        }, //TODO only return available listings
       }
     }
     return {
@@ -48,8 +54,8 @@ export async function getServerSideProps(context:any) {
 export default function ListingPage({
   listing,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session, status } = useSession()
-  const email = getEmailFromSession(session)
+  const { user, error, isLoading } = useUser()
+  const email = user?.email || null
 
   const [editing,setEditing] = useState<boolean>(false)
 
@@ -106,6 +112,7 @@ export default function ListingPage({
     }
   
     const BUYER_BEHAVIOR:{[key in ListingStatusType]:React.FC<any>} = {
+      "draft": () => <div><p>test</p></div>,
       "available": () => <div><p>test</p></div>,
       "bought": () => {
         return <Alert variant="secondary"><FontAwesomeIcon icon={faTruck}/> Received payment. Waiting for seller to ship...</Alert>
@@ -131,6 +138,7 @@ export default function ListingPage({
     }
   
     const SELLER_BEHAVIOR:{[key in ListingStatusType]:React.FC<any>} = useMemo(() => ({
+      "draft": () => <div><p>test</p></div>,
       "available": () => <Button onClick={() => setEditing(true)}>Edit this listing</Button>,
       "bought": () => {
         return (

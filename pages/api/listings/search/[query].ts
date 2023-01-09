@@ -1,17 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { Session, unstable_getServerSession } from "next-auth"
+import { getSession } from '@auth0/nextjs-auth0';
 import getDb from "../../../../lib/getDb";
 import getEmailFromSession from "../../../../lib/getEmailFromSession";
 import publicizeListing from "../../../../lib/listing/publicizeListing";
 import { ListingInterface } from "../../../../types/listing";
 import ResponseFuncs from "../../../../types/responseFuncs";
-import { authOptions } from "../../auth/[...nextauth]"
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await unstable_getServerSession(req, res, authOptions) as Session
+    const session = await getSession(req, res)
     console.log("session",session)
-    const email = getEmailFromSession(session) || null
+    const email = getEmailFromSession(session)
   
     //capture request method, we type it as a key of ResponseFunc to reduce typing later
     const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs
@@ -63,5 +62,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(400).json({ error })
   }
 }
-
-export default handler

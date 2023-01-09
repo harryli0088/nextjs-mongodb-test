@@ -1,15 +1,16 @@
 import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next"
-import { Session, unstable_getServerSession } from "next-auth"
+import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 import getDb from "../../../lib/getDb";
 import getEmailFromSession from "../../../lib/getEmailFromSession";
 import { ListingHistoryType, ListingStatusType } from "../../../types/listing";
 import ResponseFuncs from "../../../types/responseFuncs";
-import { authOptions } from "../auth/[...nextauth]"
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const session = await unstable_getServerSession(req, res, authOptions) as Session
+    const session = await getSession(req, res)
+    if(!session) { return res.status(401).json({}) }
     console.log("session",session)
   
     //capture request method, we type it as a key of ResponseFunc to reduce typing later
@@ -69,6 +70,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(error)
     res.status(400).json({ error })
   }
-}
-
-export default handler
+});

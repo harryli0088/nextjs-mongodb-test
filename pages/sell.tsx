@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react'
+import { useUser } from '@auth0/nextjs-auth0/client'
 import Link from 'next/link'
 
 import Head from 'next/head'
@@ -9,7 +9,7 @@ import ListingForm from '../components/ListingForm/ListingForm'
 import getTitle from '../lib/getTitle'
 
 export default function Sell() {
-  const { data: session, status } = useSession() 
+  const { user, error, isLoading } = useUser()
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function Sell() {
 
       <Container>
         <br/>
-        {session?.user?.email ? <ListingForm/> : (
+        {user ? <ListingForm/> : (
           <>
             <p>Log in or create a new account to make a new listing</p>
             <Link href='/api/auth/signin'>

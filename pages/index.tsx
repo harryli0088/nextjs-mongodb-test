@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { InferGetServerSidePropsType } from 'next'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 import Container from 'react-bootstrap/Container'
 
@@ -10,11 +11,12 @@ import Listing from "../components/Listing/Listing"
 import Search from '../components/Search/Search';
 
 import styles from "./index.module.scss"
+import getEmailFromSession from '../lib/getEmailFromSession';
 
 export async function getServerSideProps(context:any) {
   try {
-    const session = await getSession(context)
-    const listings = await getListings(session?.user?.email || null, "available");
+    const session = await getSession(context.req, context.res)
+    const listings = await getListings(getEmailFromSession(session), "available");
 
     return {
       props: { listings },
@@ -30,7 +32,7 @@ export async function getServerSideProps(context:any) {
 export default function Home({
   listings,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { data: session, status } = useSession()
+  const { user, error, isLoading } = useUser()
 
   console.log("listings",listings)
 

@@ -1,6 +1,6 @@
 import type { WithId, Document } from 'mongodb'
 
-export type ListingStatusType = "available"
+export type ListingStatusType = "draft" | "available"
 | "bought"
 | "shipped"
 | "received"
